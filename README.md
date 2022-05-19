@@ -41,7 +41,7 @@ comp dest jump
 Binary: 1 1 1 a c1 c2 c3 c4 c5 c6 d1 d2 d3 j1 j2 j3
 The translation of each of the three fields comp, dest, jump to their binary forms is
 specified in the following three tables.
-
+```
 comp(when a=0) c1 c2 c3 c4 c5 c6 comp(when a=1)
 0  1 0 1 0 1 0
 1  1 1 1 1 1 1
@@ -71,6 +71,7 @@ A 1 0 0       JLT 1 0 0
 AM 1 0 1      JNE 1 0 1
 AD 1 1 0      JLE 1 1 0
 AMD 1 1 1     JMP 1 1 1
+```
 #### 6.2.3 Symbols
 Hack assembly commands can refer to memory locations (addresses) using
 either constants or symbols. Symbols in assembly programs arise from three
@@ -79,7 +80,7 @@ Predefined Symbols Any Hack assembly program is allowed to use the following
 predefined symbols.
 
 Label RAM address (hexa)
-
+```
 SP 0 0x0000
 LCL 1 0x0001
 ARG 2 0x0002
@@ -88,7 +89,7 @@ THAT 4 0x0004
 R0-R15 0-15 0x0000-f
 SCREEN 16384 0x4000
 KBD 24576 0x6000
-
+```
 Note that each one of the top five RAM locations can be referred to using two
 predefined symbols. For example, either R2 or ARG can be used to refer to
 RAM[2].
