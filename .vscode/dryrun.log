@@ -1,0 +1,4 @@
+make: Entering directory `/Users/buhe/code/gitHub/hack_assembly'
+cargo run -- Add.asm
+make: Leaving directory `/Users/buhe/code/gitHub/hack_assembly'
+ 
