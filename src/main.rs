@@ -5,7 +5,7 @@ use clap::Parser;
 use crate::parser::tokenize;
 
 mod parser;
-
+mod instruction;
 #[derive(Parser)]
 #[clap(author, version, about, long_about = None)]
 struct Cli {

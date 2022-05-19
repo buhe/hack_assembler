@@ -11,6 +11,12 @@ pub fn tokenize(path: String) -> Vec<Token> {
 
 fn keyword_map() -> HashMap<String, TokenType> {
     let mut map = HashMap::new();
+    map.insert("A".into(), TokenType::Register("A".into()));
+    map.insert("D".into(), TokenType::Register("D".into()));
+    map.insert("M".into(), TokenType::Register("M".into()));
+    map.insert("JGT".into(), TokenType::Jump("JGT".into()));
+    map.insert("JLE".into(), TokenType::Jump("JLE".into()));
+    map.insert("JMP".into(), TokenType::Jump("JMP".into()));
     map
 }
 
@@ -151,8 +157,6 @@ impl Token {
 // Token type
 #[derive(Debug, PartialEq, Clone)]
 pub enum TokenType {
-    A,
-    C,
     Num(i32),      // Number literal
     Ident(String), // Identifier
     Eof,
@@ -160,6 +164,11 @@ pub enum TokenType {
     Add,           // +
     AT,             // @
     Equal,         // =
+    Semicolon,     // ;
+    LeftParen,     // (
+    RightParen,    // )
+    Register(String),
+    Jump(String),
 }
 
 
@@ -170,7 +179,10 @@ impl TokenType {
             '-' => Some(Neg),
             '+' => Some(Add),
             '@' => Some(AT),
+            ';' => Some(Semicolon),
             '=' => Some(Equal),
+            '(' => Some(LeftParen),
+            ')' => Some(RightParen),
             _ => None,
         }
     }
