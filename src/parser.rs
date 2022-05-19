@@ -1,6 +1,19 @@
 use std::rc::Rc;
 use std::collections::HashMap;
 
+pub fn tokenize(path: String) -> Vec<Token> {
+    let mut tokenizer = Tokenizer::new(Rc::new(path));
+    println!("token: {:?}", tokenizer);
+    tokenizer.scan(&keyword_map());
+    println!("after scan token: {:?}", tokenizer);
+    tokenizer.tokens
+}
+
+fn keyword_map() -> HashMap<String, TokenType> {
+    let mut map = HashMap::new();
+    map
+}
+
 // Character Kind
 #[derive(Debug, PartialEq)]
 pub enum CharacterType {
@@ -35,7 +48,7 @@ impl Tokenizer {
     // This does not support non-ASCII characters.
     fn get_character(&self, advance_from_pos: usize) -> Option<CharacterType> {
         self.p.get(self.pos + advance_from_pos).map(|ch| {
-            if ch == &'\n' {
+            if ch == &'\n' || ch == &'\r' {
                 CharacterType::NewLine
             } else if ch == &' ' || ch == &'\t' {
                 CharacterType::Whitespace
@@ -63,7 +76,7 @@ impl Tokenizer {
                         self.tokens.push(t);
                         continue;
                     }
-                    panic!("Unknwon character type. {}", c)
+                    panic!("Unknwon character type. '{}'", c)
                 }
                 CharacterType::Unknown(_) => self.bad_position("Unknwon character type."),
             }
@@ -138,10 +151,15 @@ impl Token {
 // Token type
 #[derive(Debug, PartialEq, Clone)]
 pub enum TokenType {
+    A,
+    C,
     Num(i32),      // Number literal
     Ident(String), // Identifier
-    Semicolon,     // ;
     Eof,
+    Neg,           // -
+    Add,           // +
+    AT,             // @
+    Equal,         // =
 }
 
 
@@ -149,7 +167,10 @@ impl TokenType {
     fn new_single_letter(c: char) -> Option<Self> {
         use self::TokenType::*;
         match c {
-            ';' => Some(Semicolon),
+            '-' => Some(Neg),
+            '+' => Some(Add),
+            '@' => Some(AT),
+            '=' => Some(Equal),
             _ => None,
         }
     }
