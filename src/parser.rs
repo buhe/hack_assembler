@@ -28,7 +28,7 @@ pub enum CharacterType {
     Alphabetic,
     Digit,
     NonAlphabetic(char),
-    Unknown(char),
+    // Unknown(char),
 }
 
 #[derive(Debug, Clone)]
@@ -84,7 +84,7 @@ impl Tokenizer {
                     }
                     panic!("Unknwon character type. '{}'", c)
                 }
-                CharacterType::Unknown(_) => self.bad_position("Unknwon character type."),
+                // CharacterType::Unknown(_) => self.bad_position("Unknwon character type."),
             }
         }
         self.tokens.push(self.new_token(TokenType::Eof));
@@ -129,9 +129,9 @@ impl Tokenizer {
         self.tokens.push(t);
     }
 
-    fn bad_position(&self, msg: &'static str) {
-        panic!("{}", msg);
-    }
+    // fn bad_position(&self, msg: &'static str) {
+    //     panic!("{}", msg);
+    // }
 }
 
 #[derive(Debug, Clone)]
@@ -145,12 +145,12 @@ impl Token {
         Token { ty }
     }
 
-    pub fn is_ident(&self, s: &str) -> bool {
-        match self.ty {
-            TokenType::Ident(ref name) => name == s,
-            _ => false,
-        }
-    }
+    // pub fn is_ident(&self, s: &str) -> bool {
+    //     match self.ty {
+    //         TokenType::Ident(ref name) => name == s,
+    //         _ => false,
+    //     }
+    // }
 }
 
 
