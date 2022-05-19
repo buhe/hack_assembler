@@ -2,6 +2,8 @@ use std::fs;
 
 use clap::Parser;
 
+mod parser;
+
 #[derive(Parser)]
 #[clap(author, version, about, long_about = None)]
 struct Cli {
