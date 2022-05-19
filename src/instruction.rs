@@ -8,6 +8,16 @@ struct Instruction {
     tokens: Rc<Vec<Token>>,
 }
 
+impl Instruction {
+    pub fn has_dest() -> bool {
+        false
+    }
+
+    pub fn has_jump() -> bool {
+        false
+    }
+}
+
 enum InstructionType {
     A,
     C,
