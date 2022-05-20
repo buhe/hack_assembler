@@ -1,14 +1,14 @@
 use std::rc::Rc;
 use std::collections::HashMap;
 
-use crate::instruction::Instruction;
+use crate::instruction::{Instruction, InstructionType};
 
-pub fn tokenize(path: String) -> Vec<Token> {
+pub fn tokenize(path: String) -> Vec<Instruction> {
     let mut tokenizer = Tokenizer::new(Rc::new(path));
     println!("token: {:?}", tokenizer);
     tokenizer.scan(&keyword_map());
     println!("after scan token: {:?}", tokenizer);
-    tokenizer.tokens
+    tokenizer.instructions
 }
 
 fn keyword_map() -> HashMap<String, TokenType> {
@@ -34,19 +34,19 @@ pub enum CharacterType {
 }
 
 #[derive(Debug, Clone)]
-struct Tokenizer<'a> {
+struct Tokenizer {
     p: Rc<Vec<char>>, //input
     pos: usize,
-    tokens: Vec<Token>,
-    instructions: Vec<Instruction<'a>>,
+    // tokens: Vec<Token>,
+    instructions: Vec<Instruction>,
 }
 
-impl Tokenizer<'_> {
+impl Tokenizer {
     fn new(context: Rc<String>) -> Self {
         Tokenizer {
             p: Rc::new(context.chars().collect()),
             pos: 0,
-            tokens: vec![],
+            // tokens: vec![],
             instructions: vec![],
         }
     }
@@ -72,7 +72,7 @@ impl Tokenizer<'_> {
         })
     }
 
-    fn scan(&mut self, keywords: &HashMap<String, TokenType>) -> Vec<Token> {
+    fn scan(&mut self, keywords: &HashMap<String, TokenType>) {
         let mut new_line = false;
         while let Some(head_char) = self.get_character(0) {
             match head_char {
@@ -81,14 +81,40 @@ impl Tokenizer<'_> {
                     new_line = true;
                 },
                 CharacterType::Whitespace => self.pos += 1,
-                CharacterType::Alphabetic => self.ident(&keywords),
-                CharacterType::Digit => self.number(),
+                CharacterType::Alphabetic => {
+                    let t = self.ident(&keywords);
+                    if new_line {
+                        let ins = Instruction{ty: InstructionType::C, pc: 0, tokens: vec![t] };
+                        self.instructions.push(ins);
+                        new_line = false;
+                    } else {
+                        self.instructions.last_mut().unwrap().tokens.push(t);
+                    }
+                },
+                CharacterType::Digit => {
+                    let t = self.number();
+                    if new_line {
+                        let ins = Instruction{ty: InstructionType::C, pc: 0, tokens: vec![t] };
+                        self.instructions.push(ins);
+                        new_line = false;
+                    } else {
+                        self.instructions.last_mut().unwrap().tokens.push(t);
+                    }
+                    
+                },
                 CharacterType::NonAlphabetic(c) => {
                     // Single-letter symbol
                     if let Some(ty) = TokenType::new_single_letter(c) {
                         let t = self.new_token(ty);
                         self.pos += 1;
-                        self.tokens.push(t);
+                        if t.ty == TokenType::AT {
+                            let ins = Instruction{ty: InstructionType::A, pc: 0, tokens: vec![t] };
+                            self.instructions.push(ins);
+                            new_line = false;
+                        } else {
+                            self.instructions.last_mut().unwrap().tokens.push(t);
+                        }
+                        // self.tokens.push(t);
                         continue;
                     }
                     panic!("Unknwon character type. '{}'", c)
@@ -96,11 +122,11 @@ impl Tokenizer<'_> {
                 // CharacterType::Unknown(_) => self.bad_position("Unknwon character type."),
             }
         }
-        self.tokens.push(self.new_token(TokenType::Eof));
-        self.tokens.clone()
+        // self.tokens.push(self.new_token(TokenType::Eof));
+        // self.tokens.clone()
     }
 
-    fn ident(&mut self, keywords: &HashMap<String, TokenType>) {
+    fn ident(&mut self, keywords: &HashMap<String, TokenType>) -> Token{
         let mut len = 1;
         while let Some(c2) = self.p.get(self.pos + len) {
             if c2.is_alphabetic() || c2.is_ascii_digit() || c2 == &'_' {
@@ -118,10 +144,10 @@ impl Tokenizer<'_> {
             t = self.new_token(TokenType::Ident(name.clone()));
         }
         self.pos += len;
-        self.tokens.push(t);
+        t
     }
 
-    fn number(&mut self) {
+    fn number(&mut self) -> Token{
         let base = 10;
         let mut sum: i32 = 0;
         let mut len = 0;
@@ -135,7 +161,8 @@ impl Tokenizer<'_> {
         }
         let t = self.new_token(TokenType::Num(sum as i32));
         self.pos += len;
-        self.tokens.push(t);
+        // self.tokens.push(t);
+        t
     }
 
     // fn bad_position(&self, msg: &'static str) {
@@ -168,7 +195,6 @@ impl Token {
 pub enum TokenType {
     Num(i32),      // Number literal
     Ident(String), // Identifier
-    Eof,
     Neg,           // -
     Add,           // +
     AT,             // @
