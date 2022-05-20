@@ -2,13 +2,13 @@ use std::rc::Rc;
 
 use crate::parser::Token;
 #[derive(Debug, Clone)]
-pub struct Instruction {
+pub struct Instruction<'a> {
     ty: InstructionType,
     pc: u32,
-    tokens: Rc<Vec<Token>>,
+    tokens: Vec<&'a Token>,
 }
 
-impl Instruction {
+impl Instruction<'_> {
     pub fn has_dest() -> bool {
         false
     }

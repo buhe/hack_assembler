@@ -34,14 +34,14 @@ pub enum CharacterType {
 }
 
 #[derive(Debug, Clone)]
-struct Tokenizer {
+struct Tokenizer<'a> {
     p: Rc<Vec<char>>, //input
     pos: usize,
     tokens: Vec<Token>,
-    instructions: Vec<Instruction>,
+    instructions: Vec<Instruction<'a>>,
 }
 
-impl Tokenizer {
+impl Tokenizer<'_> {
     fn new(context: Rc<String>) -> Self {
         Tokenizer {
             p: Rc::new(context.chars().collect()),
