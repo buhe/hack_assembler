@@ -73,9 +73,14 @@ impl Tokenizer {
     }
 
     fn scan(&mut self, keywords: &HashMap<String, TokenType>) -> Vec<Token> {
+        let mut new_line = false;
         while let Some(head_char) = self.get_character(0) {
             match head_char {
-                CharacterType::NewLine | CharacterType::Whitespace => self.pos += 1,
+                CharacterType::NewLine => {
+                    self.pos += 1;
+                    new_line = true;
+                },
+                CharacterType::Whitespace => self.pos += 1,
                 CharacterType::Alphabetic => self.ident(&keywords),
                 CharacterType::Digit => self.number(),
                 CharacterType::NonAlphabetic(c) => {
