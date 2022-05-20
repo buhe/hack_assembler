@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
 use crate::parser::Token;
-
-struct Instruction {
+#[derive(Debug, Clone)]
+pub struct Instruction {
     ty: InstructionType,
     pc: u32,
     tokens: Rc<Vec<Token>>,
@@ -17,8 +17,8 @@ impl Instruction {
         false
     }
 }
-
-enum InstructionType {
+#[derive(Debug, Clone)]
+pub enum InstructionType {
     A,
     C,
 }

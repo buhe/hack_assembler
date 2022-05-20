@@ -1,6 +1,8 @@
 use std::rc::Rc;
 use std::collections::HashMap;
 
+use crate::instruction::Instruction;
+
 pub fn tokenize(path: String) -> Vec<Token> {
     let mut tokenizer = Tokenizer::new(Rc::new(path));
     println!("token: {:?}", tokenizer);
@@ -36,6 +38,7 @@ struct Tokenizer {
     p: Rc<Vec<char>>, //input
     pos: usize,
     tokens: Vec<Token>,
+    instructions: Vec<Instruction>,
 }
 
 impl Tokenizer {
@@ -44,6 +47,7 @@ impl Tokenizer {
             p: Rc::new(context.chars().collect()),
             pos: 0,
             tokens: vec![],
+            instructions: vec![],
         }
     }
 
