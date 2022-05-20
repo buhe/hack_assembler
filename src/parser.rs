@@ -23,6 +23,29 @@ fn keyword_map() -> HashMap<String, TokenType> {
     map.insert("JNE".into(), TokenType::Jump("JNE".into()));
     map.insert("JLE".into(), TokenType::Jump("JLE".into()));
     map.insert("JMP".into(), TokenType::Jump("JMP".into()));
+    map.insert("R0".into(), TokenType::Num(0));
+    map.insert("R1".into(), TokenType::Num(1));
+    map.insert("R2".into(), TokenType::Num(2));
+    map.insert("R3".into(), TokenType::Num(3));
+    map.insert("R4".into(), TokenType::Num(4));
+    map.insert("R5".into(), TokenType::Num(5));
+    map.insert("R6".into(), TokenType::Num(6));
+    map.insert("R7".into(), TokenType::Num(8));
+    map.insert("R8".into(), TokenType::Num(8));
+    map.insert("R9".into(), TokenType::Num(9));
+    map.insert("R10".into(), TokenType::Num(10));
+    map.insert("R11".into(), TokenType::Num(11));
+    map.insert("R12".into(), TokenType::Num(12));
+    map.insert("R13".into(), TokenType::Num(13));
+    map.insert("R14".into(), TokenType::Num(14));
+    map.insert("R15".into(), TokenType::Num(15));
+    map.insert("SP".into(), TokenType::Num(0));
+    map.insert("LCL".into(), TokenType::Num(1));
+    map.insert("ARG".into(), TokenType::Num(2));
+    map.insert("THIS".into(), TokenType::Num(3));
+    map.insert("THAT".into(), TokenType::Num(4));
+    map.insert("SCREEN".into(), TokenType::Num(16384));
+    map.insert("KBD".into(), TokenType::Num(24576));
     map
 }
 

@@ -1,5 +1,5 @@
 
-   @0
+   @R0
    D=M
    @INFINITE_LOOP
    D;JLE 
