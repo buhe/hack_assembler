@@ -5,7 +5,7 @@ use crate::instruction::{Instruction, InstructionType};
 
 pub fn tokenize(path: String) -> Vec<Instruction> {
     let mut tokenizer = Tokenizer::new(Rc::new(path));
-    println!("token: {:?}", tokenizer);
+    // println!("token: {:?}", tokenizer);
     tokenizer.scan(&keyword_map());
     println!("after scan token: {:?}", tokenizer);
     tokenizer.instructions
@@ -17,6 +17,10 @@ fn keyword_map() -> HashMap<String, TokenType> {
     map.insert("D".into(), TokenType::Register("D".into()));
     map.insert("M".into(), TokenType::Register("M".into()));
     map.insert("JGT".into(), TokenType::Jump("JGT".into()));
+    map.insert("JEQ".into(), TokenType::Jump("JEQ".into()));
+    map.insert("JGE".into(), TokenType::Jump("JGE".into()));
+    map.insert("JLT".into(), TokenType::Jump("JLT".into()));
+    map.insert("JNE".into(), TokenType::Jump("JNE".into()));
     map.insert("JLE".into(), TokenType::Jump("JLE".into()));
     map.insert("JMP".into(), TokenType::Jump("JMP".into()));
     map
