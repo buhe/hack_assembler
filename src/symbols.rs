@@ -4,9 +4,9 @@ use std::collections::HashMap;
 // set pc for label
 // set var
 pub trait Symbolable {
-    fn add(&mut self, s: String, address: u32);
+    fn add(&mut self, s: &String, address: u32);
 
-    fn get(&self, s: String) -> u32;
+    fn get(&self, s: &String) -> u32;
 }
 #[derive(Debug, Clone)]
 pub struct Symbol {
@@ -16,16 +16,24 @@ pub struct Symbol {
 
 impl Symbol {
     pub fn new() -> Self {
-        Symbol{mem_base: 16, table: HashMap::new()}
+        Symbol{mem_base: 15, table: HashMap::new()}
+    }
+    pub fn get_var_mem(&mut self) -> u32 {
+        self.mem_base += 1;
+        self.mem_base
+    }
+
+    pub fn has(&self, s: &String) -> bool {
+        self.table.contains_key(s)
     }
 }
 
 impl Symbolable for Symbol {
-    fn add(&mut self, s: String, address: u32) {
-        self.table.insert(s, address);
+    fn add(&mut self, s: &String, address: u32) {
+        self.table.insert(s.to_string(), address);
     }
 
-    fn get(&self, s: String) -> u32 {
-        *self.table.get(&s).unwrap()
+    fn get(&self, s: &String) -> u32 {
+        *self.table.get(s).unwrap()
     }
 }
