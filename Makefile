@@ -12,3 +12,6 @@ pongL:
 
 rectL:
 	cargo run RectL.asm
+
+max:
+	cargo run Max.asm
