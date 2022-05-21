@@ -16,6 +16,9 @@ fn keyword_map() -> HashMap<String, TokenType> {
     map.insert("A".into(), TokenType::Register("A".into()));
     map.insert("D".into(), TokenType::Register("D".into()));
     map.insert("M".into(), TokenType::Register("M".into()));
+    map.insert("MD".into(), TokenType::Register("MD".into()));
+    map.insert("AM".into(), TokenType::Register("AM".into()));
+    map.insert("AD".into(), TokenType::Register("AD".into()));
     map.insert("JGT".into(), TokenType::Jump("JGT".into()));
     map.insert("JEQ".into(), TokenType::Jump("JEQ".into()));
     map.insert("JGE".into(), TokenType::Jump("JGE".into()));
@@ -236,6 +239,9 @@ pub enum TokenType {
     RightParen,    // )
     Register(String),
     Jump(String),
+    Not,            // !
+    And,            // &
+    Or,             // |
 }
 
 
@@ -250,6 +256,9 @@ impl TokenType {
             '=' => Some(Equal),
             '(' => Some(LeftParen),
             ')' => Some(RightParen),
+            '!' => Some(Not),
+            '&' => Some(And),
+            '|' => Some(Or),
             _ => None,
         }
     }

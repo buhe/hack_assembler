@@ -96,7 +96,16 @@ pub fn write_bit(ins: Vec<Instruction>) -> String {
                         },
                         TokenType::Add => {
                             raw_comp.push_str("+");
-                        }
+                        },
+                        TokenType::And => {
+                            raw_comp.push_str("&");
+                        },
+                        TokenType::Or => {
+                            raw_comp.push_str("|");
+                        },
+                        TokenType::Not => {
+                            raw_comp.push_str("!");
+                        },
                         TokenType::Register(reg) => {
                             raw_comp.push_str(reg);
                         },
@@ -116,7 +125,7 @@ pub fn write_bit(ins: Vec<Instruction>) -> String {
                             let d = dest_map.get(i).unwrap();
                             bit.push_str(d);
                         },
-                        _ => panic!("expect ident"),
+                        _ => panic!("expect reg {:?}", &i.tokens.first().unwrap()),
                     }
                 } else {
                     bit.push_str("000");
@@ -174,6 +183,7 @@ fn comp_map() -> HashMap<String, String> {
     map.insert("M-1".into(), "1110010".into());
     map.insert("D+M".into(), "1000010".into());
     map.insert("D-M".into(), "1010011".into());
+    map.insert("M-D".into(), "1000111".into());
     map.insert("D&M".into(), "1000000".into());
     map.insert("D|M".into(), "1010101".into());
     map
