@@ -1,13 +1,13 @@
 use std::rc::Rc;
 use std::collections::HashMap;
 
-use crate::{instruction::{Instruction, InstructionType, Pc}, symbols::Symbol};
+use crate::{instruction::{Instruction, InstructionType, Pc}};
 
 pub fn tokenize(path: String) -> Vec<Instruction> {
     let mut tokenizer = Tokenizer::new(Rc::new(path));
     // println!("token: {:?}", tokenizer);
     tokenizer.scan(&keyword_map());
-    println!("after scan token: {:#?}", tokenizer);
+    // println!("after scan token: {:#?}", tokenizer);
     tokenizer.instructions
 }
 
@@ -66,7 +66,6 @@ struct Tokenizer {
     pos: usize,
     // tokens: Vec<Token>,
     instructions: Vec<Instruction>,
-    symbol: Symbol,
 }
 
 impl Tokenizer {
@@ -76,7 +75,6 @@ impl Tokenizer {
             pos: 0,
             // tokens: vec![],
             instructions: vec![],
-            symbol: Symbol::new(),
         }
     }
 

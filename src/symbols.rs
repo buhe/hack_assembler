@@ -3,7 +3,7 @@ use std::collections::HashMap;
 // construcut symbol tables when 1st pass
 // set pc for label
 // set var
-trait Symbolable {
+pub trait Symbolable {
     fn add(&mut self, s: String, address: u32);
 
     fn get(&self, s: String) -> u32;

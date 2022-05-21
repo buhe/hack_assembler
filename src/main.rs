@@ -7,6 +7,7 @@ use crate::parser::tokenize;
 mod parser;
 mod instruction;
 mod symbols;
+mod codegen;
 #[derive(Parser)]
 #[clap(author, version, about, long_about = None)]
 struct Cli {
@@ -18,5 +19,6 @@ fn main() {
     let input = &cli.input.unwrap();
     let src = fs::read_to_string(input).expect("src not existed.");
     println!("src:\n{}", src);
-    tokenize(src);
+    let ins = tokenize(src);
+    codegen::write_bit(ins);
 }
