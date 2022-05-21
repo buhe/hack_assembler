@@ -2,7 +2,7 @@ use std::fs;
 
 use clap::Parser;
 
-use crate::parser::tokenize;
+use crate::{parser::tokenize, codegen::write_bit};
 
 mod parser;
 mod instruction;
@@ -20,5 +20,5 @@ fn main() {
     let src = fs::read_to_string(input).expect("src not existed.");
     println!("src:\n{}", src);
     let ins = tokenize(src);
-    codegen::write_bit(ins);
+    write_bit(ins);
 }
