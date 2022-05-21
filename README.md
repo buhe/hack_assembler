@@ -34,8 +34,8 @@ A-instruction: @value // Where value is either a non-negative decimal number
 // or a symbol referring to such number.
 value (v ¼ 0 or 1)
 Binary: 0 v vv v v v v v v v v v v v v
-C-instruction: dest¼comp;jump // Either the dest or jump fields may be empty.
-// If dest is empty, the ‘‘¼’’ is omitted;
+C-instruction: dest=comp;jump // Either the dest or jump fields may be empty.
+// If dest is empty, the ‘=’’ is omitted;
 // If jump is empty, the ‘‘;’’ is omitted.
 comp dest jump
 Binary: 1 1 1 a c1 c2 c3 c4 c5 c6 d1 d2 d3 j1 j2 j3
@@ -43,15 +43,15 @@ The translation of each of the three fields comp, dest, jump to their binary for
 specified in the following three tables.
 ```
 comp(when a=0) c1 c2 c3 c4 c5 c6 comp(when a=1)
-0  1 0 1 0 1 0
-1  1 1 1 1 1 1
--1 1 1 1 0 1 0
-D  0 0 1 1 0 0
-A  1 1 0 0 0 0        M
-!D 0 0 1 1 0 1
-!A 1 1 0 0 0 1 !M
--D 0 0 1 1 1 1
--A 1 1 0 0 1 1 -M
+0   1 0 1 0 1 0
+1   1 1 1 1 1 1
+-1  1 1 1 0 1 0
+D   0 0 1 1 0 0
+A   1 1 0 0 0 0  M
+!D  0 0 1 1 0 1
+!A  1 1 0 0 0 1 !M
+-D  0 0 1 1 1 1
+-A  1 1 0 0 1 1 -M
 D+1 0 1 1 1 1 1
 A+1 1 1 0 1 1 1 M+1
 D-1 0 0 1 1 1 0
