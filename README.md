@@ -101,5 +101,6 @@ Variable Symbols Any symbol Xxx appearing in an assembly program that is
 not predefined and is not defined elsewhere using the (Xxx) command is treated as
 a variable. Variables are mapped to consecutive memory locations as they are first
 encountered, starting at RAM address 16 (0x0010).
-
+```
 c: 15(opcode)|xx|12(control)|11 10 9 8 7 6(control)|5 4 3(dest)|2 1 0(jump)
+```
