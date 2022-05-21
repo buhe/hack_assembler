@@ -30,3 +30,18 @@ pub enum InstructionType {
     A,
     C,
 }
+
+pub struct Pc {
+    base: u32,
+}
+
+impl Pc {
+    pub fn new() -> Self {
+        Pc{base:0}
+    }
+
+    pub fn get(&mut self) -> u32 {
+        self.base += 1;
+        self.base
+    }
+}

@@ -1,7 +1,7 @@
 use std::rc::Rc;
 use std::collections::HashMap;
 
-use crate::instruction::{Instruction, InstructionType};
+use crate::instruction::{Instruction, InstructionType, Pc};
 
 pub fn tokenize(path: String) -> Vec<Instruction> {
     let mut tokenizer = Tokenizer::new(Rc::new(path));
@@ -101,6 +101,7 @@ impl Tokenizer {
 
     fn scan(&mut self, keywords: &HashMap<String, TokenType>) {
         let mut new_line = false;
+        let mut pc = Pc::new();
         while let Some(head_char) = self.get_character(0) {
             match head_char {
                 CharacterType::NewLine => {
@@ -111,7 +112,7 @@ impl Tokenizer {
                 CharacterType::Alphabetic => {
                     let t = self.ident(&keywords);
                     if new_line {
-                        let ins = Instruction{ty: InstructionType::C, pc: 0, tokens: vec![t] };
+                        let ins = Instruction{ty: InstructionType::C, pc: pc.get(), tokens: vec![t] };
                         self.instructions.push(ins);
                         new_line = false;
                     } else {
@@ -121,7 +122,7 @@ impl Tokenizer {
                 CharacterType::Digit => {
                     let t = self.number();
                     if new_line {
-                        let ins = Instruction{ty: InstructionType::C, pc: 0, tokens: vec![t] };
+                        let ins = Instruction{ty: InstructionType::C, pc: pc.get(), tokens: vec![t] };
                         self.instructions.push(ins);
                         new_line = false;
                     } else {
@@ -135,7 +136,7 @@ impl Tokenizer {
                         let t = self.new_token(ty);
                         self.pos += 1;
                         if t.ty == TokenType::AT {
-                            let ins = Instruction{ty: InstructionType::A, pc: 0, tokens: vec![t] };
+                            let ins = Instruction{ty: InstructionType::A, pc: pc.get(), tokens: vec![t] };
                             self.instructions.push(ins);
                             new_line = false;
                         } else {
