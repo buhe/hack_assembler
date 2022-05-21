@@ -5,6 +5,7 @@ use crate::{instruction::{Instruction, InstructionType}, symbols::{Symbol, Symbo
 
 pub fn write_bit(ins: Vec<Instruction>) -> String {
     let mut sym = Symbol::new();
+
     for i in &ins {
         match i.ty {
             InstructionType::Label => {
@@ -13,13 +14,7 @@ pub fn write_bit(ins: Vec<Instruction>) -> String {
                 }
                 
             },
-            _ => {}
-        }
-    }
-
-    for i in &ins {
-        match i.ty {
-            InstructionType::A => {
+             InstructionType::A => {
                 // loop all token , found first diffrent var
                 for token in &i.tokens {
                     if let  TokenType::Ident(var) = &token.ty {
@@ -33,6 +28,7 @@ pub fn write_bit(ins: Vec<Instruction>) -> String {
             _ => {}
         }
     }
+
     println!("{:#?}", sym);
     String::from("")
 }
