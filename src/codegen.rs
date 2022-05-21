@@ -6,8 +6,9 @@ use std::collections::HashMap;
 use crate::{instruction::{Instruction, InstructionType}, symbols::{Symbol, Symbolable}, parser::TokenType};
 
 pub fn write_bit(ins: Vec<Instruction>) -> String {
+    let mut bit = String::new();
     let mut sym = Symbol::new();
-  for i in &ins {
+    for i in &ins {
         match i.ty {
             InstructionType::Label => {
                 if let TokenType::Ident(label) = &i.tokens.get(1).unwrap().ty{ 
@@ -57,7 +58,14 @@ pub fn write_bit(ins: Vec<Instruction>) -> String {
     for i in &ins {
         match i.ty {
             InstructionType::A => {
-                
+                bit.push_str("0");
+                match i.tokens.get(1).unwrap().ty {
+                    TokenType::Num(n) => {
+                        bit.push_str(format!("{}", n).as_str());
+                    },
+                    _ => panic!("expect number"),
+                }
+                bit.push_str("\n");
             },
             InstructionType::C => {
                 if i.has_dest() {
@@ -76,7 +84,7 @@ pub fn write_bit(ins: Vec<Instruction>) -> String {
             _ => {}
         }
     }
-    String::from("-1")
+    bit
 }
 
 fn comp_map() -> HashMap<String, String> {
