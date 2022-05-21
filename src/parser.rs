@@ -181,17 +181,17 @@ impl Tokenizer {
 
     fn number(&mut self) -> Token{
         let base = 10;
-        let mut sum: i32 = 0;
+        let mut sum: u32 = 0;
         let mut len = 0;
         for c in self.p[self.pos..].iter() {
             if let Some(val) = c.to_digit(base) {
-                sum = sum * base as i32 + val as i32;
+                sum = sum * base + val;
                 len += 1;
             } else {
                 break;
             }
         }
-        let t = self.new_token(TokenType::Num(sum as i32));
+        let t = self.new_token(TokenType::Num(sum));
         self.pos += len;
         // self.tokens.push(t);
         t
@@ -225,7 +225,7 @@ impl Token {
 // Token type
 #[derive(Debug, PartialEq, Clone)]
 pub enum TokenType {
-    Num(i32),      // Number literal
+    Num(u32),      // Number literal
     Ident(String), // Identifier
     Neg,           // -
     Add,           // +

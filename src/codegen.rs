@@ -45,6 +45,7 @@ pub fn write_bit(ins: Vec<Instruction>) -> String {
                 for token in &i.tokens {
                     if let  TokenType::Ident(var) = &token.ty {
                         let address = sym.get(var);
+                        let replace = TokenType::Num(address);
                         // todo1
                     }
                 }
