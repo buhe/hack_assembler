@@ -3,15 +3,15 @@
 
 use std::collections::HashMap;
 
-use crate::{instruction::{Instruction, InstructionType}, symbols::{Symbol, Symbolable}, parser::TokenType};
+use crate::{instruction::{Instruction, InstructionType}, symbols::{Symbol, Symbolable}, parser::{TokenType, Token}};
 
-pub fn write_bit(ins: Vec<Instruction>) -> String {
+pub fn write_bit(mut ins: Vec<Instruction>) -> String {
     let mut bit = String::new();
     let mut sym = Symbol::new();
     let dest_map = dest_map();
     let jump_map = jump_map();
     let comp_map = comp_map();
-    for i in &ins {
+    for i in &mut ins {
         match i.ty {
             InstructionType::Label => {
                 if let TokenType::Ident(label) = &i.tokens.get(1).unwrap().ty{ 
@@ -42,17 +42,37 @@ pub fn write_bit(ins: Vec<Instruction>) -> String {
 
     println!("{:#?}", sym);
 
-    for i in &ins {
+    for i in &mut ins {
         match i.ty {
             InstructionType::A => {
                 // replace var to address
-                for token in &i.tokens {
-                    if let  TokenType::Ident(var) = &token.ty {
+                // for token in &i.tokens {
+                //     if let  TokenType::Ident(var) = &token.ty {
+                //         let address = sym.get(var);
+                //         let replace = TokenType::Num(address);
+                //         // i.tokens.remove()
+                //     }
+                // }
+
+                // let length = i.tokens.len();
+                // let mut n: usize = 0;
+                // while n < length {
+                //     let e = i.tokens.get(n).unwrap();
+                //     if let  TokenType::Ident(var) = &e.ty {
+                //         let address = sym.get(var);
+                //         let replace = TokenType::Num(address);
+                //         // i.tokens.remove()
+                //     }
+                //     n += 1;
+                // }
+                let e = i.tokens.last().unwrap();
+                if let  TokenType::Ident(var) = &e.ty {
                         let address = sym.get(var);
                         let replace = TokenType::Num(address);
-                        // todo1
-                    }
+                        i.tokens.remove(i.tokens.len() - 1);
+                        i.tokens.push(Token::new(replace));
                 }
+                //ignore number token
             },
             _ => {}
         }
