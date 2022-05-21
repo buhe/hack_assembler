@@ -164,7 +164,7 @@ impl Tokenizer {
     fn ident(&mut self, keywords: &HashMap<String, TokenType>) -> Token{
         let mut len = 1;
         while let Some(c2) = self.p.get(self.pos + len) {
-            if c2.is_alphabetic() || c2.is_ascii_digit() || c2 == &'_' {
+            if c2.is_alphabetic() || c2.is_ascii_digit() || c2 == &'_' || c2 == &'.'|| c2 == &'$'{
                 len += 1;
                 continue;
             }
