@@ -8,6 +8,9 @@ use crate::{instruction::{Instruction, InstructionType}, symbols::{Symbol, Symbo
 pub fn write_bit(ins: Vec<Instruction>) -> String {
     let mut bit = String::new();
     let mut sym = Symbol::new();
+    let dest_map = dest_map();
+    let jump_map = jump_map();
+    let comp_map = comp_map();
     for i in &ins {
         match i.ty {
             InstructionType::Label => {
@@ -61,23 +64,46 @@ pub fn write_bit(ins: Vec<Instruction>) -> String {
                 bit.push_str("0");
                 match i.tokens.get(1).unwrap().ty {
                     TokenType::Num(n) => {
-                        bit.push_str(format!("{}", n).as_str());
+                        bit.push_str(format!("{:015}", n).as_str());
                     },
                     _ => panic!("expect number"),
                 }
                 bit.push_str("\n");
             },
             InstructionType::C => {
+                bit.push_str("111");
+                // must has comp
+                // loop all token, found comp tokens
+                // comp between = ; 
+
                 if i.has_dest() {
                     //first is dest
+                    match &i.tokens.first().unwrap().ty {
+                        TokenType::Register(i) => {
+                            let d = dest_map.get(i).unwrap();
+                            bit.push_str(d);
+                        },
+                        _ => panic!("expect ident"),
+                    }
+                } else {
+                    bit.push_str("000");
                 }
                 
                 if i.has_jump() {
                     // last is jump
-                } 
-                // must has comp
-                // loop all token, found comp tokens
-                // comp between = ; 
+                      match &i.tokens.last().unwrap().ty {
+                        TokenType::Jump(j) => {
+                            let jump = jump_map.get(j).unwrap();
+                            bit.push_str(jump);
+                        },
+                        _ => panic!("expect jump"),
+                    }
+                } else {
+                    bit.push_str("000");
+                }
+
+                bit.push_str("\n");
+             
 
                 
             },
