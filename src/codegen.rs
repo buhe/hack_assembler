@@ -71,12 +71,45 @@ pub fn write_bit(ins: Vec<Instruction>) -> String {
                 bit.push_str("\n");
             },
             InstructionType::C => {
+                let has_dest = i.has_dest();
+                let has_jump = i.has_jump();
                 bit.push_str("111");
                 // must has comp
                 // loop all token, found comp tokens
                 // comp between = ; 
-
-                if i.has_dest() {
+                let mut start_index:usize = 0;
+                let mut end_index = i.tokens.len();
+                if has_dest.0 {
+                    start_index = has_dest.1 + 1;
+                }
+                if has_jump.0 {
+                    end_index = has_jump.1;
+                }
+                let mut raw_comp = String::new();
+                while end_index > start_index {
+                    match &i.tokens.get(start_index).unwrap().ty {
+                        TokenType::Num(num) => {
+                            raw_comp.push_str(format!("{}", num).as_str());
+                        },
+                        TokenType::Neg => {
+                            raw_comp.push_str("-");
+                        },
+                        TokenType::Add => {
+                            raw_comp.push_str("+");
+                        }
+                        TokenType::Register(reg) => {
+                            raw_comp.push_str(reg);
+                        },
+                        _ => {
+                            panic!("error type");
+                        }
+                    }
+                    start_index += 1;
+                }
+                // println!("raw {}", raw_comp);
+                let comp = comp_map.get(&raw_comp).unwrap();
+                bit.push_str(comp);
+                if has_dest.0 {
                     //first is dest
                     match &i.tokens.first().unwrap().ty {
                         TokenType::Register(i) => {
@@ -89,7 +122,7 @@ pub fn write_bit(ins: Vec<Instruction>) -> String {
                     bit.push_str("000");
                 }
                 
-                if i.has_jump() {
+                if has_jump.0 {
                     // last is jump
                       match &i.tokens.last().unwrap().ty {
                         TokenType::Jump(j) => {

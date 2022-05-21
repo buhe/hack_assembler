@@ -7,22 +7,26 @@ pub struct Instruction {
 }
 
 impl Instruction {
-    pub fn has_dest(&self) -> bool {
+    pub fn has_dest(&self) -> (bool, usize) {
+        let mut i = 0;
         for t in &self.tokens {
             if t.ty == TokenType::Equal {
-                return true;
+                return (true, i);
             } 
+            i += 1;
         }
-        false
+        (false, i)
     }
 
-    pub fn has_jump(&self) -> bool {
+    pub fn has_jump(&self) -> (bool, usize) {
+        let mut i = 0;
         for t in &self.tokens {
             if t.ty == TokenType::Semicolon {
-                return true;
+                return (true, i);
             } 
+            i += 1;
         }
-        false
+        (false, i)
     }
 }
 #[derive(Debug, Clone)]
