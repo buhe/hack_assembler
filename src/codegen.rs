@@ -45,6 +45,7 @@ pub fn write_bit(ins: Vec<Instruction>) -> String {
                 for token in &i.tokens {
                     if let  TokenType::Ident(var) = &token.ty {
                         let address = sym.get(var);
+                        // todo1
                     }
                 }
             },
@@ -67,7 +68,7 @@ pub fn write_bit(ins: Vec<Instruction>) -> String {
                 } 
                 // must has comp
                 // loop all token, found comp tokens
-                // between = ; 
+                // comp between = ; 
 
                 
             },
