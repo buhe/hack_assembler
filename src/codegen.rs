@@ -76,7 +76,7 @@ pub fn write_bit(ins: Vec<Instruction>) -> String {
             _ => {}
         }
     }
-    String::from("")
+    String::from("-1")
 }
 
 fn comp_map() -> HashMap<String, String> {
