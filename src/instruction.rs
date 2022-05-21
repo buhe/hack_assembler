@@ -29,6 +29,7 @@ impl Instruction {
 pub enum InstructionType {
     A,
     C,
+    Label,
 }
 
 pub struct Pc {
@@ -43,5 +44,9 @@ impl Pc {
     pub fn get(&mut self) -> u32 {
         self.base += 1;
         self.base
+    }
+
+    pub fn get_without_inc(&self) -> u32 {
+        self.base + 1
     }
 }
