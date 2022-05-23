@@ -1,4 +1,4 @@
-## hack assembly
+## hack assembler
 ### Hack Assembly-to-Binary Translation Specification
 The Hack assembly language and its equivalent binary representation were specified
 in chapter 4. A compact and formal version of this language specification is repeated
